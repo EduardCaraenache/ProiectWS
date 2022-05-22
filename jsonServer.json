@@ -1,0 +1,158 @@
+{
+  "people": [
+    {
+      "firstName": "Ronaldo",
+      "lastName": "Cristiano",
+      "age": 37,
+      "talentId": 1,
+      "id": 1
+    },
+    {
+      "firstName": "Messi",
+      "lastName": "Lionel",
+      "age": 34,
+      "talentId": 5,
+      "id": 2
+    },
+    {
+      "firstName": "Coman",
+      "lastName": "Florinel",
+      "age": 24,
+      "talentId": 3,
+      "id": 3
+    },
+    {
+      "firstName": "Gheorghe",
+      "lastName": "Hagi",
+      "age": 57,
+      "talentId": 2,
+      "id": 4
+    },
+    {
+      "firstName": "Costea",
+      "lastName": "Florin",
+      "age": 37,
+      "talentId": 1,
+      "id": 5
+    },
+    {
+      "firstName": "Mihai",
+      "lastName": "Florin",
+      "age": 33,
+      "talentId": 5,
+      "id": 6
+    },
+    {
+      "firstName": "Bourceanu",
+      "lastName": "Alexandru",
+      "age": 37,
+      "talentId": 6,
+      "id": 7
+    },
+    {
+      "firstName": "Insigne",
+      "lastName": "Lorenzo",
+      "age": 30,
+      "talentId": 3,
+      "id": 8
+    },
+    {
+      "firstName": "Sergio",
+      "lastName": "Ramos",
+      "age": 36,
+      "talentId": 7,
+      "id": 9
+    },
+    {
+      "firstName": "Joao",
+      "lastName": "Cancelo",
+      "age": 27,
+      "talentId": 8,
+      "id": 10
+    },
+    {
+      "firstName": "Gabriel",
+      "lastName": "Jesus",
+      "age": 27,
+      "talentId": 9,
+      "id": 11
+    },
+    {
+      "firstName": "Robert",
+      "lastName": "Lewandowski",
+      "age": 33,
+      "talentId": 7,
+      "id": 12
+    },
+    {
+      "firstName": "Gerard",
+      "lastName": "Pique",
+      "age": 35,
+      "talentId": 9,
+      "id": 13
+    },
+    {
+      "firstName": "Thomas",
+      "lastName": "Muller",
+      "age": 32,
+      "talentId": 10,
+      "id": 14
+    },
+    {
+      "firstName": "Diego",
+      "lastName": "Costa",
+      "age": 33,
+      "talentId": 10,
+      "id": 15
+    },
+    {
+      "firstName": "Douglas",
+      "lastName": "Costa",
+      "age": 31,
+      "talentId": 8,
+      "id": 16
+    }
+  ],
+  "talents": [
+    {
+      "id": 1,
+      "name": "faianțar"
+    },
+    {
+      "id": 2,
+      "name": "grădinar"
+    },
+    {
+      "id": 3,
+      "name": "shaormar"
+    },
+    {
+      "id": 4,
+      "name": "asistent medical"
+    },
+    {
+      "id": 5,
+      "name": "trepăduș"
+    },
+    {
+      "id": 6,
+      "name": "betonierist"
+    },
+    {
+      "id": 7,
+      "name": "vidanjor"
+    },
+    {
+      "id": 8,
+      "name": "florar"
+    },
+    {
+      "id": 9,
+      "name": "tractorist"
+    },
+    {
+      "id": 10,
+      "name": "gloabă"
+    }
+  ]
+}

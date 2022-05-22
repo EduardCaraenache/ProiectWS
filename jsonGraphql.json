@@ -1,0 +1,17 @@
+{
+  "people": [
+    {
+      "id": 1,
+      "firstName": "Ronaldo",
+      "lastName": "Cristiano",
+      "age": 37,
+      "talentId": 1
+    }
+  ],
+  "talents": [
+    {
+      "id": 1,
+      "name": "faianțar"
+    }
+  ]
+}
