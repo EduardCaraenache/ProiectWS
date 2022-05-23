@@ -20,16 +20,22 @@ button {
   padding: 20px;
   border: none;
   margin-right: 30px;
+  border-radius: 16px;
 }
+
 .button1 {
   background-color: #98fb98;
 }
+
 .button2 {
   background-color: #f88379;
 }
+
 .button3 {
   background-color: #7df9ff;
 }
+
 .button4 {
   background-color: red;
+  width: 170px;
 }
