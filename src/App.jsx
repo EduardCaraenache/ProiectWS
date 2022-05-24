@@ -1,6 +1,6 @@
 import "./App.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
   const [firstNamePeople, setFirstNamePeople] = useState("");
@@ -54,10 +54,10 @@ function App() {
       operationName: "allPeopleMutation",
       query: `mutation allPeopleMutation{
         createPerson(
-        firstName : "Messia",
-             lastName: "Romario",
-              age:34,
-             talentId:3
+        firstName : "${data[1].firstName}",
+             lastName: "${data[1].lastName}",
+              age:${data[1].age},
+             talentId:${data[1].talentId}
          ) {
              id
            }
@@ -65,9 +65,11 @@ function App() {
       variables: data,
     };
 
+    console.log(graphqlMutation.variables);
+
     const graphqlQuery = {
-      operationName: "allPeople",
-      query: `query allPeople { allPeople { id firstName lastName age talentId }}`,
+      operationName: "allPeopleQuery",
+      query: `query allPeopleQuery { allPeople { id firstName lastName age talentId }}`,
     };
 
     const optionsPost = {
@@ -92,6 +94,23 @@ function App() {
   };
 
   const submitHandler3 = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.get("http://localhost:8080", {}).then(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const submitHandler4 = async (e) => {
     e.preventDefault();
 
     try {
@@ -160,20 +179,23 @@ function App() {
         <br></br>
         <div>
           <button className="button1" onClick={submitHandler1} type="submit">
-            1
+            Button 1
           </button>
           <button className="button2" onClick={submitHandler2} type="submit">
-            2
+            Button 2
           </button>
           <button className="button3" onClick={submitHandler3} type="submit">
-            3
+            Button 3
+          </button>
+          <button className="button4" onClick={submitHandler4} type="submit">
+            Button 4
           </button>
         </div>
       </form>
       <br></br>
       <br></br>
       <div>
-        <table>
+        <table className="table">
           <tbody>
             <tr>
               <th>First Name</th>
@@ -198,6 +220,30 @@ function App() {
               )}
             </tbody>
           }
+        </table>
+        <table className="tableBonus">
+          <tbody>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Age</th>
+              <th>Talent</th>
+            </tr>
+          </tbody>
+          <tbody>
+            {data ? (
+              data.map((player) => (
+                <tr key={player.id}>
+                  <td>{player.firstName}</td>
+                  <td>{player.lastName}</td>
+                  <td>{player.age}</td>
+                  <td>{player.talentId}</td>
+                </tr>
+              ))
+            ) : (
+              <tr></tr>
+            )}
+          </tbody>
         </table>
       </div>
     </div>
