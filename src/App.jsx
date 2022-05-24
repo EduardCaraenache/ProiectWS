@@ -49,10 +49,6 @@ function App() {
     const headers = {
       "content-type": "application/json",
     };
-    const graphqlQuery = {
-      operationName: "allPeople",
-      query: `query allPeople { allPeople { id firstName lastName age talentId }}`,
-    };
 
     const graphqlMutation = {
       operationName: "allPeopleMutation",
@@ -69,10 +65,9 @@ function App() {
       variables: data,
     };
 
-    const optionsGet = {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(graphqlQuery),
+    const graphqlQuery = {
+      operationName: "allPeople",
+      query: `query allPeople { allPeople { id firstName lastName age talentId }}`,
     };
 
     const optionsPost = {
@@ -81,13 +76,19 @@ function App() {
       body: JSON.stringify(graphqlMutation),
     };
 
-    const responseGet = await fetch(endpoint, optionsGet);
-    const dataGet = await responseGet.json();
-    console.log("GET", dataGet);
+    const optionsGet = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(graphqlQuery),
+    };
 
     const responsePost = await fetch(endpoint, optionsPost);
     const dataPost = await responsePost.json();
-    console.log("POST", dataPost);
+    console.log("JsonGraphQLServer POST", dataPost);
+
+    const responseGet = await fetch(endpoint, optionsGet);
+    const dataGet = await responseGet.json();
+    console.log("JsonGraphQLServer GET", dataGet);
   };
 
   const submitHandler3 = async (e) => {
