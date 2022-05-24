@@ -1,33 +1,28 @@
 import "./App.css";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [firstNamePeople, setFirstNamePeople] = useState("");
   const [lastNamePeople, setLastNamePeople] = useState("");
   const [agePeople, setAgePeople] = useState(0);
   const [talentPeople, setTalentPeople] = useState(1);
-  let result;
+  const [data, setData] = useState([]);
 
   const submitHandler1 = async (e) => {
     e.preventDefault();
 
-    const firstName = firstNamePeople;
-    const lastName = lastNamePeople;
-    const age = Number(agePeople);
-    const talentId = Number(talentPeople);
-
     try {
       await axios
         .post("http://localhost:4000/people", {
-          firstName,
-          lastName,
-          age,
-          talentId,
+          firstName: firstNamePeople,
+          lastName: lastNamePeople,
+          age: +agePeople,
+          talentId: +talentPeople,
         })
         .then(
           (response) => {
-            console.log(response);
+            console.log("jsonServer POST", response);
           },
           (error) => {
             console.log(error);
@@ -38,16 +33,11 @@ function App() {
     }
 
     try {
-      await axios.get("http://localhost:4000/people", {}).then(
-        (response) => {
-          result = response;
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-      console.log(result);
+      await axios.get("http://localhost:4000/people", {}).then((response) => {
+        const { data } = response;
+        setData(data);
+        console.log("jsonServer GET", data);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -55,18 +45,49 @@ function App() {
 
   const submitHandler2 = async (e) => {
     e.preventDefault();
-    try {
-      await axios.get("http://localhost:3000", {}).then(
-        (response) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    const endpoint = "http://localhost:3000/graphql";
+    const headers = {
+      "content-type": "application/json",
+    };
+    const graphqlQuery = {
+      operationName: "allPeople",
+      query: `query allPeople { allPeople { id firstName lastName age talentId }}`,
+    };
+
+    const graphqlMutation = {
+      operationName: "allPeopleMutation",
+      query: `mutation allPeopleMutation{
+        createPerson(
+        firstName : "Messia",
+             lastName: "Romario",
+              age:34,
+             talentId:3
+         ) {
+             id
+           }
+         }`,
+      variables: data,
+    };
+
+    const optionsGet = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(graphqlQuery),
+    };
+
+    const optionsPost = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(graphqlMutation),
+    };
+
+    const responseGet = await fetch(endpoint, optionsGet);
+    const dataGet = await responseGet.json();
+    console.log("GET", dataGet);
+
+    const responsePost = await fetch(endpoint, optionsPost);
+    const dataPost = await responsePost.json();
+    console.log("POST", dataPost);
   };
 
   const submitHandler3 = async (e) => {
@@ -85,9 +106,6 @@ function App() {
       console.log(error);
     }
   };
-
-  //Butonul asta trebuie sa creeze un tabel mai jos cu datele pe care le avem primite de la server
-  const submitHandler4 = async (e) => {};
 
   return (
     <div className="App">
@@ -154,11 +172,6 @@ function App() {
       <br></br>
       <br></br>
       <div>
-        <button className="button4" onClick={submitHandler4}>
-          Verifica obiectul primit de la butonul 1
-        </button>
-        <br></br>
-        <br></br>
         <table>
           <tbody>
             <tr>
@@ -168,16 +181,22 @@ function App() {
               <th>Talent</th>
             </tr>
           </tbody>
-          {/* <tbody>
-            {result.data.map((id) => (
-              <tr>
-                <td>{data.firstName}</td>
-                <td>{data.lastName}</td>
-                <td>{data.age}</td>
-                <td>{data.talentId}</td>
-              </tr>
-            ))}
-          </tbody> */}
+          {
+            <tbody>
+              {data ? (
+                data.map((player) => (
+                  <tr key={player.id}>
+                    <td>{player.firstName}</td>
+                    <td>{player.lastName}</td>
+                    <td>{player.age}</td>
+                    <td>{player.talentId}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr></tr>
+              )}
+            </tbody>
+          }
         </table>
       </div>
     </div>
