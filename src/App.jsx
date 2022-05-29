@@ -8,6 +8,8 @@ function App() {
   const [agePeople, setAgePeople] = useState(0);
   const [talentPeople, setTalentPeople] = useState(1);
   const [data, setData] = useState([]);
+  const [player, setPlayer] = useState(null);
+  const [players, setPlayers] = useState([]);
 
   const submitHandler1 = async (e) => {
     e.preventDefault();
@@ -50,47 +52,61 @@ function App() {
       "content-type": "application/json",
     };
 
-    const graphqlMutation = {
-      operationName: "allPeopleMutation",
-      query: `mutation allPeopleMutation{
-        createPerson(
-        firstName : "${data[1].firstName}",
-             lastName: "${data[1].lastName}",
-              age:${data[1].age},
-             talentId:${data[1].talentId}
-         ) {
-             id
-           }
-         }`,
-      variables: data,
+    const mutation = async (e) => {
+      for (let i = 0; i < e.length; i++) {
+        const graphqlMutation = {
+          operationName: "allPeopleMutation",
+          query: `mutation allPeopleMutation{
+          createPerson(
+          firstName : "${data[i].firstName}",
+               lastName: "${data[i].lastName}",
+                age:${data[i].age},
+               talentId:${data[i].talentId}
+           ) {
+               id
+             }
+           }`,
+          variables: data,
+        };
+
+        console.log(graphqlMutation.variables[i]);
+
+        const optionsPost = {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(graphqlMutation),
+        };
+
+        const responsePost = await fetch(endpoint, optionsPost);
+        const dataPost = await responsePost.json();
+        console.log("JsonGraphQLServer POST", dataPost);
+      }
+      query();
     };
 
-    console.log(graphqlMutation.variables);
+    const query = async (e) => {
+      const graphqlQuery = {
+        operationName: "allPeopleQuery",
+        query: `query allPeopleQuery { allPeople { id firstName lastName age talentId }}`,
+      };
 
-    const graphqlQuery = {
-      operationName: "allPeopleQuery",
-      query: `query allPeopleQuery { allPeople { id firstName lastName age talentId }}`,
+      const optionsGet = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(graphqlQuery),
+      };
+
+      const responseGet = await fetch(endpoint, optionsGet);
+      const dataGet = await responseGet.json();
+
+      console.log("JsonGraphQLServer GET", dataGet);
+
+      const { allPeople } = dataGet.data;
+      console.log(dataGet.data.allPeople.shift());
+      setPlayers(allPeople);
     };
 
-    const optionsPost = {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(graphqlMutation),
-    };
-
-    const optionsGet = {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(graphqlQuery),
-    };
-
-    const responsePost = await fetch(endpoint, optionsPost);
-    const dataPost = await responsePost.json();
-    console.log("JsonGraphQLServer POST", dataPost);
-
-    const responseGet = await fetch(endpoint, optionsGet);
-    const dataGet = await responseGet.json();
-    console.log("JsonGraphQLServer GET", dataGet);
+    mutation(data);
   };
 
   const submitHandler3 = async (e) => {
@@ -112,16 +128,12 @@ function App() {
 
   const submitHandler4 = async (e) => {
     e.preventDefault();
+    const url = "https://62936d26089f87a57ac018ed.mockapi.io/api/v1/players";
 
     try {
-      await axios.get("http://localhost:8080", {}).then(
-        (response) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      await axios.get(url, {}).then((response) => {
+        setPlayer(response.data);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -195,7 +207,11 @@ function App() {
       <br></br>
       <br></br>
       <div>
-        <table className="table">
+        <table className="table" id="1">
+          <caption className="caption1"> jsonServer </caption>
+          <tbody>
+            <tr></tr>
+          </tbody>
           <tbody>
             <tr>
               <th>First Name</th>
@@ -221,7 +237,11 @@ function App() {
             </tbody>
           }
         </table>
-        <table className="tableBonus">
+        <table className="table" id="2">
+          <caption className="caption2"> GraphQL </caption>
+          <tbody>
+            <tr></tr>
+          </tbody>
           <tbody>
             <tr>
               <th>First Name</th>
@@ -231,8 +251,66 @@ function App() {
             </tr>
           </tbody>
           <tbody>
-            {data ? (
-              data.map((player) => (
+            {players ? (
+              players.map((player) => (
+                <tr key={player.id}>
+                  <td>{player.firstName}</td>
+                  <td>{player.lastName}</td>
+                  <td>{player.age}</td>
+                  <td>{player.talentId}</td>
+                </tr>
+              ))
+            ) : (
+              <tr></tr>
+            )}
+          </tbody>
+        </table>
+        <table className="table" id="3">
+          <caption className="caption3"> RDF4J </caption>
+          <tbody>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+          </tbody>
+          <tbody>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Age</th>
+              <th>Talent</th>
+            </tr>
+          </tbody>
+          <tbody>
+            {/* {player ? (
+              player.map((player) => (
+                <tr key={player.id}>
+                  <td>{player.firstName}</td>
+                  <td>{player.lastName}</td>
+                  <td>{player.age}</td>
+                  <td>{player.talentId}</td>
+                </tr>
+              ))
+            ) : (
+              <tr></tr>
+            )} */}
+          </tbody>
+        </table>
+        <table className="table" id="4">
+          <caption className="caption4"> MockAPI </caption>
+          <tbody>
+            <tr></tr>
+          </tbody>
+          <tbody>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Age</th>
+              <th>Talent</th>
+            </tr>
+          </tbody>
+          <tbody>
+            {player ? (
+              player.map((player) => (
                 <tr key={player.id}>
                   <td>{player.firstName}</td>
                   <td>{player.lastName}</td>

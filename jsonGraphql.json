@@ -2,8 +2,8 @@
   "people": [
     {
       "id": 1,
-      "firstName": "Ronaldo",
-      "lastName": "Cristiano",
+      "firstName": "Cristiano",
+      "lastName": "Ronaldo",
       "age": 37,
       "talentId": 1
     }
