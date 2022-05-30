@@ -49,6 +49,13 @@ caption.caption4 {
   color: #d61c4e;
 }
 
+/* table,
+tr,
+td,
+th {
+  border: 1px solid black;
+} */
+
 .button1 {
   background-color: #fef9a7;
 }
@@ -68,5 +75,5 @@ caption.caption4 {
 .table {
   float: left;
   text-align: center;
-  width: 25%;
+  width: 24%;
 }

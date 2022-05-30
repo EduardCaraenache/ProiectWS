@@ -8,6 +8,7 @@ function App() {
   const [agePeople, setAgePeople] = useState(0);
   const [talentPeople, setTalentPeople] = useState(1);
   const [data, setData] = useState([]);
+  const [talents, setTalents] = useState("");
   const [player, setPlayer] = useState(null);
   const [players, setPlayers] = useState([]);
 
@@ -39,6 +40,16 @@ function App() {
         const { data } = response;
         setData(data);
         console.log("jsonServer GET", data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      await axios.get("http://localhost:4000/talents", {}).then((response) => {
+        const { data } = response;
+        setTalents(data);
+        console.log("jsonServer GET talents data", data);
       });
     } catch (error) {
       console.log(error);
@@ -111,9 +122,24 @@ function App() {
 
   const submitHandler3 = async (e) => {
     e.preventDefault();
+    const endpoint =
+      "http://localhost:8080/rdf4j-workbench/repositories/grafexamen";
+    let firstName = players.firstName;
+    let lastName = players.lastName;
+    let age = players.age;
+    let talentId = players.lastName;
+    console.log(firstName, lastName, age, talentId);
+
+    const query = `insert data{ 
+      Graph <http://localhost:3000/> {
+        <http://localhost:3000/people>  <http://localhost:3000/firstName> "${firstName}".
+        <http://localhost:3000/people> <http://localhost:3000/lastName> "${lastName}".      
+         <http://localhost:3000/people>  <http://localhost:3000/age> "${age}".
+         <http://localhost:3000/people>   <http://localhost:3000/talentId> "${talentId}". 
+      }}`;
 
     try {
-      await axios.get("http://localhost:8080", {}).then(
+      await axios.post(endpoint, { update: query }).then(
         (response) => {
           console.log(response);
         },
@@ -132,6 +158,14 @@ function App() {
 
     try {
       await axios.get(url, {}).then((response) => {
+        setPlayer(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      await axios.post(url, {}).then((response) => {
         setPlayer(response.data);
       });
     } catch (error) {
@@ -228,6 +262,13 @@ function App() {
                     <td>{player.firstName}</td>
                     <td>{player.lastName}</td>
                     <td>{player.age}</td>
+                    {/* {talents ? (
+                      talents.map((talent) => (
+                        <td key={talent.id}>{talents[0].name}</td>
+                      ))
+                    ) : (
+                      <td></td>
+                    )} */}
                     <td>{player.talentId}</td>
                   </tr>
                 ))
@@ -268,8 +309,6 @@ function App() {
         <table className="table" id="3">
           <caption className="caption3"> RDF4J </caption>
           <tbody>
-            <tr></tr>
-            <tr></tr>
             <tr></tr>
           </tbody>
           <tbody>
